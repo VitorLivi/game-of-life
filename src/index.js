@@ -1,5 +1,5 @@
 const CELL_SIZE = 10;
-const DENSITY = 0.9;
+const DENSITY = 0.5;
 const SPEED = 100;
 
 let gridArray = [];
