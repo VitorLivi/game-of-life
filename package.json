@@ -1,0 +1,9 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": "Conway's Game of Life with WebGL",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Vitor Livi",
+  "license": "ISC"
+}

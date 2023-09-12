@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="src/global.css" />
+</head>
+
+<body>
+
+  <canvas id="app"></canvas>
+  <form id="controls" onsubmit="return onClickStart(event)">
+    <input id="cell-size" type="number" placeholder="Cell Size (10)"
+      onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;"></input>
+    <input id="density" type="number" step="0.1" placeholder="Initial Density (0.5)"></input>
+    <input id="speed" type="number" placeholder="Render Speed Mill (100)"
+      onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;"></input>
+    <button type="submit">Start</button>
+  </form>
+  <script src="src/index.js"></script>
+</body>
+
+</html>
