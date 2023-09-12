@@ -3,6 +3,7 @@ const DENSITY = 0.9;
 const SPEED = 100;
 
 let gridArray = [];
+let speed = SPEED;
 
 function initCanvas(cellSize) {
   const canvas = document.getElementById('app');
@@ -46,9 +47,6 @@ function paintGrid(cellSize) {
 }
 
 function randonizeGrid(density) {
-
-  console.log('density', density)
-
   for (array of gridArray) {
     const arrayLength = array.length;
     const activateLineCells = Math.floor(arrayLength * density);
@@ -129,7 +127,6 @@ function countAliveNeighbors(x, y) {
   return nw + n + w + ne + e + sw + s + se;
 }
 
-
 // Uma célula viva morre se tiver menos de dois vizinhos vivos.
 // Uma célula viva com dois ou três vizinhos vivos sobrevive para a próxima geração.
 // Uma célula viva com mais de três vizinhos vivos morre.
@@ -163,12 +160,20 @@ function calculateGameOfLife() {
   gridArray = newGridArray;
 }
 
-const intervals = [];
+let animationFrame = null;
 function onClickStart(e) {
   e.preventDefault();
   e.stopPropagation();
 
-  intervals.forEach(interval => clearInterval(interval));
+  if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  }
+
+  const speedEl = document.getElementById('speed');
+  if (speedEl) {
+    speed = speedEl.value > 0 ? speedEl.value : SPEED;
+  }
 
   let cellSize = CELL_SIZE;
   const cellSizeEl = document.getElementById('cell-size');
@@ -184,29 +189,20 @@ function onClickStart(e) {
 
   initCanvas(cellSize);
   randonizeGrid(density);
-  run(cellSize);
+  animationFrame = requestAnimationFrame((time) => run(cellSize, time));
 }
 
-function run(cellSize) {
-  let speed = document.getElementById('speed');
-
-  if (speed) {
-    speed = speed.value > 0 ? speed.value : 100;
-  } else {
-    speed = SPEED;
-  }
-
-  const interval = setInterval(() => {
+let lastRun = 0;
+function run(cellSize, time) {
+  if (time - lastRun > speed || lastRun === 0) {
     paintGrid(cellSize);
     calculateGameOfLife();
-  }, speed);
+    lastRun = time;
+  }
 
-  intervals.push(interval);
+  animationFrame = requestAnimationFrame((time) => run(cellSize, time));
 }
 
 const gl = initCanvas(CELL_SIZE);
 randonizeGrid(DENSITY);
-run(CELL_SIZE);
-
-
-
+animationFrame = requestAnimationFrame((time) => run(CELL_SIZE, time));
